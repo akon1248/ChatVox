@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.akon.chatvox.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ModMenuEventHandlerMixin"
+  ],
+  "client": [
+    "MinecraftClientMixin",
+    "ScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

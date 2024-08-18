@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "chatvox",
+  "version": "${version}",
+  "name": "Chat Vox",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/chatvox/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.akon.chatvox.ChatVox"
+    ],
+    "modmenu": [
+      "com.akon.chatvox.ConfigScreenHandler"
+    ]
+  },
+  "mixins": [
+    "chatvox.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "modmenu": ">=11.0.1",
+    "cloth-config": ">=15.0.130"
+  }
+}
