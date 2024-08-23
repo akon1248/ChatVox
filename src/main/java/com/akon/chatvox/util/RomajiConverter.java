@@ -64,7 +64,7 @@ public class RomajiConverter {
 	private Either<Unit, Optional<String>> searchForPossibleConversions(String romaji, boolean includeSokuon) {
 		if (includeSokuon && romaji.length() >= 2 && romaji.charAt(0) == romaji.charAt(1) && isNonNConsonant(romaji.charAt(0))) {
 			return searchForPossibleConversions(romaji.substring(1), false)
-				.mapRight(opt -> opt.map(kana -> "ッ" + kana));
+				.mapRight(opt -> opt.map(kana -> "っ" + kana));
 		}
 		var left = 0;
 		var right = ROMAJI_TABLE.size() - 1;
@@ -117,7 +117,7 @@ public class RomajiConverter {
 			// Handles the cases of "n" + consonant
 			if (sub.length() == 2 && sub.charAt(0) == 'n') {
 				// It is unreachable here in the cases such as "na", "nu" and "nn" because they are already converted.
-				sb.append("ン");
+				sb.append("ん");
 				start++;
 				continue;
 			}

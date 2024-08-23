@@ -10,12 +10,12 @@ public class ChatVoxTest {
 	@Test
 	public void romajiTest() {
 		assertEquals("", RomajiConverter.convertToKana(""));
-		assertEquals("ア", RomajiConverter.convertToKana("a"));
+		assertEquals("あ", RomajiConverter.convertToKana("a"));
 		assertEquals("b", RomajiConverter.convertToKana("b"));
-		assertEquals("カ", RomajiConverter.convertToKana("ka"));
-		assertEquals("コレハテストデス", RomajiConverter.convertToKana("korehatesutodesu"));
-		assertEquals("マインクラフト", RomajiConverter.convertToKana("mainkurafuto"));
-		assertEquals("モッド", RomajiConverter.convertToKana("moddo"));
-		assertEquals("Mイネcラft", RomajiConverter.convertToKana("Minecraft"));
+		assertEquals("か", RomajiConverter.convertToKana("ka"));
+		assertEquals("これはてすとです", RomajiConverter.convertToKana("korehatesutodesu"));
+		assertEquals("まいんくらふと", RomajiConverter.convertToKana("mainkurafuto"));
+		assertEquals("もっど", RomajiConverter.convertToKana("moddo"));
+		assertEquals("Mいねcらft", RomajiConverter.convertToKana("Minecraft"));
 	}
 }

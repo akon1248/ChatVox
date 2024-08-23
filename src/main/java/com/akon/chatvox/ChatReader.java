@@ -22,10 +22,10 @@ public class ChatReader {
 	// We don't have to include vowel alphabets and capital letters because vowel alphabets cannot exist in a converted text
 	// and VOICEVOX reads alphabets in the kana-style pronunciation.
 	private final Map<Character, String> ALPHABET_KANA_PRONUNCIATIONS = ImmutableMap.<Character, String>builder()
-		.put('b', "ブ").put('c', "ク").put('d', "ドゥ").put('f', "フ").put('g', "グ")
-		.put('h', "フ").put('j', "ジ").put('k', "ク").put('l', "ル").put('m', "ム")
-		.put('n', "ン").put('p', "プ").put('q', "ク").put('r', "ル").put('s', "ス")
-		.put('t', "トゥ").put('v', "ヴ").put('w', "ウ").put('x', "クス").put('y', "イ").put('z', "ズ")
+		.put('b', "ぶ").put('c', "く").put('d', "どぅ").put('f', "ふ").put('g', "ぐ")
+		.put('h', "ふ").put('j', "じ").put('k', "く").put('l', "る").put('m', "む")
+		.put('n', "ん").put('p', "ぷ").put('q', "く").put('r', "る").put('s', "す")
+		.put('t', "とぅ").put('v', "ヴ").put('w', "う").put('x', "くす").put('y', "い").put('z', "ず")
 		.build();
 
 	private final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
