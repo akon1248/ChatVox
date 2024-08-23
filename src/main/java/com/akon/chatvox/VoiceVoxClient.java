@@ -34,6 +34,7 @@ public class VoiceVoxClient {
 				() -> {
 					isConnected = true;
 					NotificationUtil.infoWithToast("Connection to VOICEVOX engine established", null, CONNECTION_STATUS);
+					VoiceVoxSpeakers.updateSpeakers();
 				}
 			);
 		});
@@ -44,6 +45,7 @@ public class VoiceVoxClient {
 					NotificationUtil.errorWithToast("Connection to VOICEVOX engine lost", "Chat Vox is now disabled until the connection is restored", CONNECTION_STATUS);
 				} else {
 					NotificationUtil.infoWithToast("Connection to VOICEVOX engine restored", "Chat Vox is now enabled", CONNECTION_STATUS);
+					VoiceVoxSpeakers.updateSpeakers();
 				}
 			}
 		}, 0, 1000, TimeUnit.MILLISECONDS);
