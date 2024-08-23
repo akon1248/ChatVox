@@ -3,12 +3,11 @@ package com.akon.chatvox;
 import com.akon.chatvox.util.RomajiConverter;
 import com.google.common.collect.ImmutableMap;
 import lombok.experimental.UtilityClass;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
+import net.minecraft.sound.SoundCategory;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Map;
@@ -44,6 +43,8 @@ public class ChatReader {
 		}
 		VoiceVoxClient.synthesize(sb.toString(), ChatVox.config.speaker)
 			.whenCompleteAsync((wav, e) -> {
+				// Directly passing InputStream from HttpURLConnection.getInputStream to AudioSystem.getAudioInputStream causes an exception
+				// because it doesn't support mark/reset.
 				if (e == null) {
 					try (var audio = AudioSystem.getAudioInputStream(new ByteArrayInputStream(wav));
 						 var clip = AudioSystem.getClip()) {
@@ -54,6 +55,9 @@ public class ChatReader {
 							}
 						});
 						clip.open(audio);
+						var volume = MinecraftClient.getInstance().options.getSoundVolume(SoundCategory.VOICE);
+						var volumeControl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+						volumeControl.setValue((float)Math.log10(volume) * 20);
 						clip.start();
 						try {
 							latch.await();
