@@ -3,6 +3,7 @@ package com.akon.chatvox;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,5 +24,6 @@ public class ChatVox implements ClientModInitializer {
 		}
 		ConfigManager.loadConfig();
 		VoiceVoxLauncher.launch();
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> VoiceVoxCommunicator.init());
 	}
 }
