@@ -42,7 +42,7 @@ public class ChatReader {
 			var c = text.charAt(i);
 			sb.append(ALPHABET_KANA_PRONUNCIATIONS.getOrDefault(c, String.valueOf(c)));
 		}
-		VoiceVoxCommunicator.synthesize(sb.toString(), ChatVox.config.speaker)
+		VoiceVoxClient.synthesize(sb.toString(), ChatVox.config.speaker)
 			.whenCompleteAsync((wav, e) -> {
 				if (e == null) {
 					try (var audio = AudioSystem.getAudioInputStream(new ByteArrayInputStream(wav));

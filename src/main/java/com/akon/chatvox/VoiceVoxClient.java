@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 @UtilityClass
-public class VoiceVoxCommunicator {
+public class VoiceVoxClient {
 
 	private final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 	private final SystemToast.Type CONNECTION_STATUS = new SystemToast.Type(10000L);
@@ -108,7 +108,7 @@ public class VoiceVoxCommunicator {
 		}
 	}
 
-	private Speaker[] _getSpeakers() throws IOException, JsonSyntaxException, JsonIOException {
+	private Speaker[] _fetchSpeakers() throws IOException, JsonSyntaxException, JsonIOException {
 		try (var in = URI.create(getURL() + "/speakers").toURL().openStream()) {
 			return ChatVox.GSON.fromJson(new InputStreamReader(in), Speaker[].class);
 		}
@@ -118,7 +118,7 @@ public class VoiceVoxCommunicator {
 		return wrap(() -> _synthesize(text, speakerId));
 	}
 
-	public CompletableFuture<Speaker[]> getSpeakers() {
-		return wrap(VoiceVoxCommunicator::_getSpeakers);
+	public CompletableFuture<Speaker[]> fetchSpeakers() {
+		return wrap(VoiceVoxClient::_fetchSpeakers);
 	}
 }

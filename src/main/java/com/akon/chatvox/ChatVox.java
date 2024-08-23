@@ -24,10 +24,10 @@ public class ChatVox implements ClientModInitializer {
 		}
 		ConfigManager.loadConfig();
 		VoiceVoxLauncher.launch();
-		ClientLifecycleEvents.CLIENT_STARTED.register(client -> VoiceVoxCommunicator.init());
+		ClientLifecycleEvents.CLIENT_STARTED.register(client -> VoiceVoxClient.init());
 	}
 
 	public static boolean isEnabled() {
-		return config.enabled && VoiceVoxCommunicator.connected();
+		return config.enabled && VoiceVoxClient.connected();
 	}
 }
