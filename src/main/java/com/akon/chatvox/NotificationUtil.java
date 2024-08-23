@@ -86,11 +86,11 @@ public class NotificationUtil {
 		}
 		for (String line : lines) {
 			var text = Text.literal(PREFIX + line).styled(style -> {
-				style.withColor(level.getColor());
+				var colored = style.withColor(level.getColor());
 				if (description != null) {
-					style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(description)));
+					return colored.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of(description)));
 				}
-				return style;
+				return colored;
 			});
 			client.inGameHud.getChatHud().addMessage(text);
 		}
