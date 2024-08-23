@@ -31,7 +31,7 @@ public class InteractiveTextWidget extends ButtonWidget {
 
 	@Override
 	public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-		Text text = this.isMouseOver(mouseX, mouseY) && this.clickable ? this.getHoverText() : this.text;
+		var text = this.isMouseOver(mouseX, mouseY) && this.clickable ? this.getHoverText() : this.text;
 		context.drawTextWithShadow(this.textRenderer, text, this.getX(), this.getY(), 0xFFFFFF | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		if (this.isMouseOver(mouseX, mouseY)) {
 			context.drawHoverEvent(this.textRenderer, text.getStyle(), mouseX, mouseY);
