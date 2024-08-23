@@ -1,5 +1,7 @@
 package com.akon.chatvox;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +12,13 @@ public class ChatVox implements ClientModInitializer {
 	static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final int DEFAULT_PORT = 50021;
 	static ChatVoxConfig config = new ChatVoxConfig();
+	static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	@Override
 	public void onInitializeClient() {
-		ErrorReporter.init();
-		if (VoiceVoxFinder.get() == VoiceVoxFinder.UNSUPPORTED) {
-			ErrorReporter.error("You are using an unsupported OS: " + System.getProperty("os.name") + "\nChat Vox currently only supports Windows");
+		NotificationUtil.init();
+		if (OSAdapter.get() == OSAdapter.UNSUPPORTED) {
+			NotificationUtil.error("You are using an unsupported OS: " + System.getProperty("os.name") + "\nChat Vox currently only supports Windows", null);
 			return;
 		}
 		ConfigManager.loadConfig();
