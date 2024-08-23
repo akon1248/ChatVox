@@ -70,7 +70,7 @@ public class RomajiConverter {
 		var right = ROMAJI_TABLE.size() - 1;
 		var success = false;
 		while (left <= right) {
-			var mid = left + (right - left) / 2;
+			var mid = (left + right) / 2;
 			var entry = ROMAJI_TABLE.get(mid);
 			var cmp = entry.getFirst().compareTo(romaji);
 			if (cmp == 0) {
@@ -100,6 +100,14 @@ public class RomajiConverter {
 		int start = 0, end = 1;
 		while (start < end || end < romaji.length()) {
 			var sub = romaji.substring(start, end);
+
+			if (sub.equals("-")) {
+				sb.append("ー");
+				start++;
+				end = Math.min(end + 1, romaji.length());
+				continue;
+			}
+
 			var result = searchForPossibleConversions(sub, true);
 			if (result.right().isPresent()) {
 				var opt = result.right().get();

@@ -16,6 +16,7 @@ public class ChatVoxTest {
 		assertEquals("これはてすとです", RomajiConverter.convertToKana("korehatesutodesu"));
 		assertEquals("まいんくらふと", RomajiConverter.convertToKana("mainkurafuto"));
 		assertEquals("もっど", RomajiConverter.convertToKana("moddo"));
+		assertEquals("すうぇーでん", RomajiConverter.convertToKana("suwe-denn"));
 		assertEquals("Mいねcらft", RomajiConverter.convertToKana("Minecraft"));
 	}
 }
