@@ -2,6 +2,7 @@ package com.akon.chatvox;
 
 import com.akon.chatvox.data.Speaker;
 import com.akon.chatvox.data.SpeakerStyle;
+import com.akon.chatvox.util.AudioUtil;
 import com.mojang.datafixers.util.Pair;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -9,6 +10,7 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.gui.entries.DropdownBoxEntry;
 import net.minecraft.text.Text;
 
+import javax.sound.sampled.Mixer;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -39,7 +41,7 @@ public class ConfigScreenHandler implements ModMenuApi {
 				);
 			var currentSpeaker = VoiceVoxSpeakers.getById(ChatVox.config.speaker);
 			var defaultSpeaker = VoiceVoxSpeakers.getById(3);
-			Function<Pair<Speaker, SpeakerStyle>, Text> toTextFunc = pair -> {
+			Function<Pair<Speaker, SpeakerStyle>, Text> speakerToTextFunc = pair -> {
 				var speaker = pair.getFirst();
 				if (speaker == null) {
 					return Text.empty();
@@ -56,7 +58,7 @@ public class ConfigScreenHandler implements ModMenuApi {
 					currentSpeaker == null ? EMPTY_ENTRY : currentSpeaker,
 					s -> {
 						if (s.isEmpty()) {
-							return EMPTY_ENTRY;
+							return null;
 						}
 						var i = s.indexOf(" (");
 						if (i == -1) {
@@ -64,23 +66,23 @@ public class ConfigScreenHandler implements ModMenuApi {
 							if (speaker != null) {
 								return Pair.of(speaker, speaker.styles()[0]);
 							}
-							return EMPTY_ENTRY;
+							return null;
 						}
 						if (s.charAt(s.length() - 1) != ')') {
-							return EMPTY_ENTRY;
+							return null;
 						}
 						var speaker = VoiceVoxSpeakers.getSpeaker(s.substring(0, i));
 						if (speaker == null) {
-							return EMPTY_ENTRY;
+							return null;
 						}
 						var style = VoiceVoxSpeakers.getStyle(speaker.name(), s.substring(i + 2, s.length() - 1));
 						if (style == null) {
-							return EMPTY_ENTRY;
+							return null;
 						}
 						return Pair.of(speaker, style);
 					},
-					toTextFunc,
-					new DropdownBoxEntry.DefaultSelectionCellCreator<>(toTextFunc)
+					speakerToTextFunc,
+					new DropdownBoxEntry.DefaultSelectionCellCreator<>(speakerToTextFunc)
 				)
 				.setDefaultValue(defaultSpeaker == null ? EMPTY_ENTRY : defaultSpeaker)
 				.setTooltip(Text.literal("Speaker and style to use for voice synthesis"))
@@ -94,6 +96,21 @@ public class ConfigScreenHandler implements ModMenuApi {
 					var style = value.getSecond();
 					ChatVox.config.speaker = style == null ? 3 : style.id();
 				})
+				.build()
+			);
+			Function<Mixer.Info, Text> mixerInfoToTextFunc = mixerInfo -> Text.literal(mixerInfo.getName());
+			general.addEntry(builder.entryBuilder()
+				.startDropdownMenu(
+					Text.literal("Output Device"),
+					ChatVox.config.mixer,
+					AudioUtil::getOutputDeviceByName,
+					mixerInfoToTextFunc,
+					new DropdownBoxEntry.DefaultSelectionCellCreator<>(mixerInfoToTextFunc)
+				)
+				.setDefaultValue(AudioUtil.getDefaultOutputDevice())
+				.setTooltip(Text.literal("Output device for synthesized voice"))
+				.setSelections(AudioUtil.getOutputDevices())
+				.setSaveConsumer(value -> ChatVox.config.mixer = value)
 				.build()
 			);
 			builder.setSavingRunnable(ConfigManager::saveConfig);
