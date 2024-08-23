@@ -27,7 +27,15 @@ public class ConfigScreenHandler implements ModMenuApi {
 					.setDefaultValue("")
 					.setSaveConsumer(value -> ChatVox.config.voiceVoxPath = value)
 					.build()
-				);
+				)
+				.addEntry(builder.entryBuilder()
+					.startIntField(Text.literal("Speaker"), ChatVox.config.speaker)
+					.setTooltip(Text.literal("Speaker ID"))
+					.setDefaultValue(3)
+					.setSaveConsumer(value -> ChatVox.config.speaker = value)
+					.build()
+				)
+			;
 			builder.setSavingRunnable(ConfigManager::saveConfig);
 			return builder.build();
 		};

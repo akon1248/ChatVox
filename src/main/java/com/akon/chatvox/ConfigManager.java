@@ -1,7 +1,7 @@
 package com.akon.chatvox;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -14,19 +14,18 @@ import java.io.IOException;
 public class ConfigManager {
 
 	private final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(ChatVox.MOD_ID + ".json").toFile();
-	private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	public void loadConfig() {
 		if (CONFIG_FILE.exists()) {
 			try (var reader = new FileReader(CONFIG_FILE)) {
-				ChatVoxConfig config = GSON.fromJson(reader, ChatVoxConfig.class);
+				var config = ChatVox.GSON.fromJson(reader, ChatVoxConfig.class);
 				if (config == null) {
-					ErrorReporter.error("Failed to load config");
+					NotificationUtil.error("Failed to load config", null);
 					return;
 				}
 				ChatVox.config = config;
-			} catch (IOException e) {
-				ErrorReporter.error("Failed to load config", e);
+			} catch (IOException | JsonSyntaxException | JsonIOException e) {
+				NotificationUtil.error("Failed to load config", null, e);
 			}
 		} else {
 			saveConfig();
@@ -35,9 +34,9 @@ public class ConfigManager {
 
 	public void saveConfig() {
 		try (var writer = new FileWriter(CONFIG_FILE)) {
-			GSON.toJson(ChatVox.config, writer);
-		} catch (IOException e) {
-			ErrorReporter.error("Failed to save config", e);
+			ChatVox.GSON.toJson(ChatVox.config, writer);
+		} catch (IOException | JsonIOException e) {
+			NotificationUtil.error("Failed to save config", null, e);
 		}
 	}
 
